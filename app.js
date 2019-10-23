@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const Square = require('./square.js');
 const mySquare = new Square();
+const wiki = require('./wiki.js');
+app.use('/wiki', wiki);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
