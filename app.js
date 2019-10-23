@@ -1,9 +1,17 @@
 const express = require('express');
 const app = express();
+
+const myLogger = require('./myLogger.js');
+app.use(myLogger);
+
 const Square = require('./square.js');
 const mySquare = new Square();
+
 const wiki = require('./wiki.js');
 app.use('/wiki', wiki);
+
+const logger = require('morgan');
+app.use(logger('dev'));
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
