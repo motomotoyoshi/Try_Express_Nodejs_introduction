@@ -37,4 +37,9 @@ app.post('/', (req, res) => {
 	res.render('template.ejs', {})
 });
 
+app.use((err, req, res, next) => {
+    console.error(err.static);
+    res.status(500).send('Something broke!');
+})
+
 app.listen(3000, () => console.log('Example app listening on port 3000.' + mySquare.area(4)));
