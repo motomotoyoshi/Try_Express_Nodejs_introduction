@@ -3,24 +3,21 @@ const myLogger = require('./myLogger.js');
 const ejs = require('ejs');
 const logger = require('morgan');
 const app = express();
-const session = require('express-session');
+
+let msg = '';
 
 app.engine('ejs', ejs.renderFile);
 app.use(myLogger);
 app.use(logger('dev'));
-app.use(session({
-	secret: 'hoge',
-	resave: true,
-	saveUninitialized: true,
-}));
 
 app.get('/', (req, res) => {
-	let cnt = req.session.cnt == undefined ? 0: req.session.cnt;
-	cnt++;
-	req.session.cnt = cnt;
+	res.render('template.ejs', {});
+});
 
-	res.render('template.ejs', {
-		cnt: cnt
+app.post('/ajax', (req, res) => {
+	msg += 'hoge';
+	res.json({
+		msg: msg
 	});
 });
 
