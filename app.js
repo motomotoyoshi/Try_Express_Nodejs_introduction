@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
 const myLogger = require('./myLogger.js');
 app.use(myLogger);
 
@@ -23,23 +26,18 @@ app.use(logger('dev'));
 app.use('/media', express.static('public'));
 
 app.get('/', (req, res) => {
-	console.log('---GET Request---');
-	console.log('Name is ' + req.query.name);
-	console.log('Age is ' + req.query.age);
-	res.render('template.ejs', {})
+	let cnt = req.cookies.cnt == undefined ? 0: req.cookies.cnt;
+	cnt++;
+	res.cookie('cnt', cnt, {maxAge: 5000});
+
+	res.render('template.ejs', {
+		cnt: cnt
+	});
 });
 
+// app.use((err, req, res, next) => {
+//     console.error(err.static);
+//     res.status(500).send('Something broke!');
+// })
 
-app.post('/', (req, res) => {
-	console.log('---POST Request---');
-	console.log('Name is ' + req.body.name);
-	console.log('Age is ' + req.body.age);
-	res.render('template.ejs', {})
-});
-
-app.use((err, req, res, next) => {
-    console.error(err.static);
-    res.status(500).send('Something broke!');
-})
-
-app.listen(3000, () => console.log('Example app listening on port 3000.' + mySquare.area(4)));
+app.listen(3000, () => console.log('Example app listening on port 3000.'));
